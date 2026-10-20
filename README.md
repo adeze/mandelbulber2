@@ -75,6 +75,75 @@ In render window:
 
 ## Building and Deploying 
 
+### Qt 6 development build (CMake)
+
+Use CMake 3.24+, Ninja, a C++20 compiler, and Qt 6.7+ with Core, Gui, Widgets,
+UiTools, Network, Test, Multimedia, Qml, Concurrent, Svg, QuickWidgets, and
+QuickControls2 (plus QuickTest when testing). Required native
+libraries are PNG, GSL, LZO, and zlib. The default build also requires OpenCL
+and Khronos OpenCL C++ headers, OpenMP, OpenEXR, TIFF, libsndfile, and pkg-config.
+Use CMake for the QML interface: the historical qmake projects do not package
+the new QML module.
+
+From the repository root:
+
+```sh
+cmake --preset qt6-release
+cmake --build --preset qt6-release --parallel
+ctest --preset qt6-release
+```
+
+If Qt is outside CMake's default search paths, pass its installation prefix:
+
+```sh
+cmake --preset qt6-release -DCMAKE_PREFIX_PATH=/path/to/Qt/6.x/macos
+```
+
+On Apple Silicon with Homebrew's separate Qt modules:
+
+```sh
+cmake --preset qt6-release -DCMAKE_PREFIX_PATH="/opt/homebrew;/opt/homebrew/opt/qtbase;/opt/homebrew/opt/qttools;/opt/homebrew/opt/qtmultimedia;/opt/homebrew/opt/qtdeclarative;/opt/homebrew/opt/qtsvg;/opt/homebrew/opt/qtshadertools"
+```
+
+Homebrew dependency names are `cmake ninja qtbase qttools qtmultimedia
+qtdeclarative qtsvg qtshadertools libpng gsl lzo libomp openexr libtiff libsndfile
+pkgconf opencl-clhpp-headers`. macOS supplies the OpenCL framework. Apple Clang
+uses an existing Homebrew `libomp` installation; no fast-math flags are added.
+Qt Shader Tools is needed only for the optional QRhi experiment.
+
+Optional features can be disabled explicitly with
+`-DMANDELBULBER_ENABLE_OPENCL=OFF`, `-DMANDELBULBER_ENABLE_OPENMP=OFF`,
+`-DMANDELBULBER_ENABLE_EXR=OFF`, `-DMANDELBULBER_ENABLE_TIFF=OFF`, or
+`-DMANDELBULBER_ENABLE_SNDFILE=OFF`. Disabling OpenCL retains CPU rendering.
+Use the `qt6-debug` presets for debugging. Run the bulk regression suite in
+Release: legacy animation migration can exceed QtTest's five-minute watchdog in Debug.
+
+The executable is under `build/qt6-release/bin/`; macOS produces
+`mandelbulber2.app` there with runtime resources in `Contents/Resources`.
+This is a development bundle using installed libraries, not a signed,
+self-contained distribution. Packaging, deployment, and notarization remain
+separate steps. Direct configuration of `mandelbulber2/cmake` is also supported.
+
+Enable the isolated shader experiment with
+`-DMANDELBULBER_BUILD_QRHI_TEST=ON` and `-DBUILD_TESTING=ON`, then build and run
+`ctest --preset qt6-release -R qrhi_metal_mandelbulb`. The default CTest suite runs
+the existing application regression tests and Qt Quick control tests; the optional probe requires a real
+macOS Metal device and does not replace the OpenCL renderer.
+
+The navigation dock's Render, Stop, Undo, Redo, and Open navigator actions now
+use a Qt Quick panel embedded in the existing Widgets application. Other panels
+and the viewport remain Widgets. Run the focused checks with
+`ctest --preset qt6-release -R quick`. The renderer migration design is in
+[renderer-modernisation.md](docs/renderer-modernisation.md).
+
+### Project-local agent tools
+
+Official Qt skills are installed under `.agents/skills`, with provenance in
+`skills-lock.json`. `.codex/config.toml` configures Qt's hosted documentation MCP
+and the local Mandelbulber preview MCP. Restart the Codex chat to load them.
+The local MCP uses the existing CPU renderer; see [its tools and checks](tools/mcp/README.md).
+Its configured checkout path must be updated if this repository is moved.
+
 Download the latest stable version from [Releases](https://github.com/buddhi1980/mandelbulber2/releases) or clone git repository for actual development version.
 
 After downloading, unpack the file and follow our instructions from the [README](https://raw.githubusercontent.com/buddhi1980/mandelbulber2/master/mandelbulber2/deploy/README) file.

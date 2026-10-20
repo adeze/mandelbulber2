@@ -1,0 +1,40 @@
+{
+  "version": 5,
+  "cmakeMinimumRequired": { "major": 3, "minor": 24, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "qt6-debug",
+      "displayName": "Qt 6 development build",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/qt6-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "BUILD_TESTING": true
+      }
+    },
+    {
+      "name": "qt6-release",
+      "displayName": "Qt 6 optimized build",
+      "inherits": "qt6-debug",
+      "binaryDir": "${sourceDir}/build/qt6-release",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "qt6-debug", "configurePreset": "qt6-debug" },
+    { "name": "qt6-release", "configurePreset": "qt6-release" }
+  ],
+  "testPresets": [
+    {
+      "name": "qt6-debug",
+      "configurePreset": "qt6-debug",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "qt6-release",
+      "configurePreset": "qt6-release",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}

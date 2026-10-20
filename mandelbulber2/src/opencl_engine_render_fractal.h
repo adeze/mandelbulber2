@@ -173,7 +173,7 @@ public:
 
 	static inline sRGBFloat clFloat3TosRGBFloat(const cl_float3 &clPixel)
 	{
-		return sRGBFloat(clPixel.s0, clPixel.s1, clPixel.s2);
+		return sRGBFloat(clPixel.s[0], clPixel.s[1], clPixel.s[2]);
 	}
 
 private:

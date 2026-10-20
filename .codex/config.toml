@@ -1,0 +1,7 @@
+[mcp_servers.qt-docs]
+url = "https://qt-docs-mcp.qt.io/mcp"
+
+[mcp_servers.mandelbulber]
+command = "uv"
+args = ["run", "--locked", "--directory", "/Users/adam/Development/adeze/mandelbulber2/tools/mcp", "server.py"]
+startup_timeout_sec = 30

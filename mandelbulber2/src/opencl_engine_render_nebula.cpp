@@ -601,7 +601,7 @@ bool cOpenClEngineRenderNebula::Render(std::shared_ptr<cImage> image, bool *stop
 						inputAndOutputBuffers[0][inOutImageBufferIndex].ptr.get())[x + y * width];
 
 					sRGBFloat color(
-						colorCl.s0 * brightness, colorCl.s1 * brightness, colorCl.s2 * brightness);
+						colorCl.s[0] * brightness, colorCl.s[1] * brightness, colorCl.s[2] * brightness);
 
 					if (constantInBuffer->params.nebulaConstantBrighness
 							&& totalSamplesCounter > 0) // darken by brightness
@@ -618,7 +618,7 @@ bool cOpenClEngineRenderNebula::Render(std::shared_ptr<cImage> image, bool *stop
 					image->PutPixelPostImage(x, y, color);
 					image->PutPixelAlpha(x, y, 65535);
 
-					float zDepth = colorCl.s3;
+					float zDepth = colorCl.s[3];
 					image->PutPixelZBuffer(x, y, zDepth);
 				}
 			}

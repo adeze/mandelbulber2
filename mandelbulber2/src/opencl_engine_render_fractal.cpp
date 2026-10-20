@@ -1627,8 +1627,8 @@ void cOpenClEngineRenderFractal::ConcurentProcessTile(sConcurentTileProcess &dat
 			// getting pixel from output buffer
 			sClPixel pixelCl = reinterpret_cast<const sClPixel *>(
 				output.outputBuffers.at(data.in->outputIndex).data.data())[x + y * jobWidth];
-			sRGBFloat pixel = {pixelCl.image.s0, pixelCl.image.s1, pixelCl.image.s2};
-			sRGB8 color = {pixelCl.color.s0, pixelCl.color.s1, pixelCl.color.s2};
+			sRGBFloat pixel = {pixelCl.image.s[0], pixelCl.image.s[1], pixelCl.image.s[2]};
+			sRGB8 color = {pixelCl.color.s[0], pixelCl.color.s[1], pixelCl.color.s[2]};
 			unsigned short opacity = pixelCl.opacity;
 			unsigned short alpha = pixelCl.alpha;
 
@@ -1994,7 +1994,7 @@ void cOpenClEngineRenderFractal::MixChannels(
 
 	if (output.monteCarloLoop == 1) // first sample: just write values
 	{
-		normalWorld = sRGBFloat(pixelCl.normalWorld.s0, pixelCl.normalWorld.s1, pixelCl.normalWorld.s2);
+		normalWorld = sRGBFloat(pixelCl.normalWorld.s[0], pixelCl.normalWorld.s[1], pixelCl.normalWorld.s[2]);
 
 		if (image->GetImageOptional()->optionalNormalWorld)
 			normalWorld = clFloat3TosRGBFloat(pixelCl.normalWorld);
@@ -2017,7 +2017,7 @@ void cOpenClEngineRenderFractal::MixChannels(
 		if (image->GetImageOptional()->optionalNormalWorld)
 		{
 			sRGBFloat normalNew =
-				sRGBFloat(pixelCl.normalWorld.s0, pixelCl.normalWorld.s1, pixelCl.normalWorld.s2);
+				sRGBFloat(pixelCl.normalWorld.s[0], pixelCl.normalWorld.s[1], pixelCl.normalWorld.s[2]);
 
 			sRGBFloat nornalOld = image->GetPixelNormalWorld(xx, yy);
 
@@ -2032,11 +2032,11 @@ void cOpenClEngineRenderFractal::MixChannels(
 			sRGBFloat globalIlluminationOutOld = image->GetPixelGlobalIllumination(xx, yy);
 
 			globalIlluminationOut.R =
-				globalIlluminationOutOld.R * k1 + pixelCl.globalIllumination.s0 * k2;
+				globalIlluminationOutOld.R * k1 + pixelCl.globalIllumination.s[0] * k2;
 			globalIlluminationOut.G =
-				globalIlluminationOutOld.G * k1 + pixelCl.globalIllumination.s1 * k2;
+				globalIlluminationOutOld.G * k1 + pixelCl.globalIllumination.s[1] * k2;
 			globalIlluminationOut.B =
-				globalIlluminationOutOld.B * k1 + pixelCl.globalIllumination.s2 * k2;
+				globalIlluminationOutOld.B * k1 + pixelCl.globalIllumination.s[2] * k2;
 		}
 
 		// mixing optional channels: not denoised
@@ -2055,36 +2055,36 @@ void cOpenClEngineRenderFractal::MixChannels(
 		{
 			sRGBFloat colorOld = image->GetPixelDiffuse(xx, yy);
 
-			colorOut.R = colorOld.R * k1 + pixelCl.diffuse.s0 * k2;
-			colorOut.G = colorOld.G * k1 + pixelCl.diffuse.s1 * k2;
-			colorOut.B = colorOld.B * k1 + pixelCl.diffuse.s2 * k2;
+			colorOut.R = colorOld.R * k1 + pixelCl.diffuse.s[0] * k2;
+			colorOut.G = colorOld.G * k1 + pixelCl.diffuse.s[1] * k2;
+			colorOut.B = colorOld.B * k1 + pixelCl.diffuse.s[2] * k2;
 		}
 
 		if (image->GetImageOptional()->optionalNormal)
 		{
 			sRGBFloat normalOld = image->GetPixelNormal(xx, yy);
 
-			normalOut.R = normalOld.R * k1 + pixelCl.normal.s0 * k2;
-			normalOut.G = normalOld.G * k1 + pixelCl.normal.s1 * k2;
-			normalOut.B = normalOld.B * k1 + pixelCl.normal.s2 * k2;
+			normalOut.R = normalOld.R * k1 + pixelCl.normal.s[0] * k2;
+			normalOut.G = normalOld.G * k1 + pixelCl.normal.s[1] * k2;
+			normalOut.B = normalOld.B * k1 + pixelCl.normal.s[2] * k2;
 		}
 
 		if (image->GetImageOptional()->optionalSpecular)
 		{
 			sRGBFloat specularOld = image->GetPixelSpecular(xx, yy);
 
-			specularOut.R = specularOld.R * k1 + pixelCl.specular.s0 * k2;
-			specularOut.G = specularOld.G * k1 + pixelCl.specular.s1 * k2;
-			specularOut.B = specularOld.B * k1 + pixelCl.specular.s2 * k2;
+			specularOut.R = specularOld.R * k1 + pixelCl.specular.s[0] * k2;
+			specularOut.G = specularOld.G * k1 + pixelCl.specular.s[1] * k2;
+			specularOut.B = specularOld.B * k1 + pixelCl.specular.s[2] * k2;
 		}
 
 		if (image->GetImageOptional()->optionalShadows)
 		{
 			sRGBFloat shadowsOld = image->GetPixelShadows(xx, yy);
 
-			shadowsOut.R = shadowsOld.R * k1 + pixelCl.shadows.s0 * k2;
-			shadowsOut.G = shadowsOld.G * k1 + pixelCl.shadows.s1 * k2;
-			shadowsOut.B = shadowsOld.B * k1 + pixelCl.shadows.s2 * k2;
+			shadowsOut.R = shadowsOld.R * k1 + pixelCl.shadows.s[0] * k2;
+			shadowsOut.G = shadowsOld.G * k1 + pixelCl.shadows.s[1] * k2;
+			shadowsOut.B = shadowsOld.B * k1 + pixelCl.shadows.s[2] * k2;
 		}
 	}
 

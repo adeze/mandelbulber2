@@ -30,80 +30,14 @@
     <number>2</number>
    </property>
    <item>
-    <layout class="QGridLayout" name="gridLayout_26">
-     <property name="topMargin">
-      <number>0</number>
+    <widget class="cRenderControlsWidget" name="renderControls">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton_redo">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Redo last revoked change of settings and start rendering of image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>REDO</string>
-       </property>
-       <property name="icon">
-        <iconset theme="edit-redo" resource="icons.qrc">
-         <normaloff>:/system/icons/edit-redo.png</normaloff>:/system/icons/edit-redo.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_undo">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Discard last change of settings and start rendering of image&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>UNDO</string>
-       </property>
-       <property name="icon">
-        <iconset theme="edit-undo" resource="icons.qrc">
-         <normaloff>:/system/icons/edit-undo.png</normaloff>:/system/icons/edit-undo.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QPushButton" name="pushButton_openNavigator">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt; &lt;p&gt;Open a new Navigator window initialized with the current scene and camera for interactive navigation and view selection.&lt;/p&gt; &lt;p&gt;Notes: - You can open multiple Navigator windows. - Close the Navigator when finished to free resources.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Open new navigator</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QPushButton" name="pushButton_stop">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Terminate rendering&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>STOP</string>
-       </property>
-       <property name="icon">
-        <iconset theme="process-stop" resource="icons.qrc">
-         <normaloff>:/system/icons/process-stop.svg</normaloff>:/system/icons/process-stop.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QPushButton" name="pushButton_render">
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start rendering of image based on actual settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>RENDER</string>
-       </property>
-       <property name="icon">
-        <iconset theme="applications-graphics" resource="icons.qrc">
-         <normaloff>:/system/icons/applications-graphics.svg</normaloff>:/system/icons/applications-graphics.svg</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -1418,6 +1352,11 @@ to target:</string>
  </widget>
  <customwidgets>
   <customwidget>
+   <class>cRenderControlsWidget</class>
+   <extends>QWidget</extends>
+   <header>render_controls.h</header>
+  </customwidget>
+  <customwidget>
    <class>MyComboBox</class>
    <extends>QComboBox</extends>
    <header>my_combo_box.h</header>
@@ -1454,10 +1393,7 @@ to target:</string>
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>pushButton_render</tabstop>
-  <tabstop>pushButton_stop</tabstop>
-  <tabstop>pushButton_undo</tabstop>
-  <tabstop>pushButton_redo</tabstop>
+  <tabstop>renderControls</tabstop>
   <tabstop>checkBox_auto_refresh</tabstop>
   <tabstop>scrollArea_navi</tabstop>
   <tabstop>pushButton_reset_view</tabstop>

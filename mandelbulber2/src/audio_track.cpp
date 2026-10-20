@@ -177,6 +177,7 @@ void cAudioTrack::LoadAudio(const QString &_filename)
 		QAudioFormat desiredFormat;
 		desiredFormat.setChannelCount(1);
 		desiredFormat.setSampleRate(sampleRate);
+		desiredFormat.setSampleFormat(QAudioFormat::Int16);
 #endif
 
 		decoder.reset(new QAudioDecoder());
@@ -184,7 +185,7 @@ void cAudioTrack::LoadAudio(const QString &_filename)
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 		decoder->setSourceFilename(filename);
 #else
-		decoder->setSource(QUrl(filename));
+		decoder->setSource(QUrl::fromLocalFile(filename));
 #endif
 
 		connect(decoder.get(), SIGNAL(bufferReady()), this, SLOT(slotReadBuffer()));

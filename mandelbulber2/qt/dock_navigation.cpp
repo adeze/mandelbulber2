@@ -75,7 +75,7 @@ void cDockNavigation::AssignParameterContainers(
 
 void cDockNavigation::RenderButtonSetEnabled(bool enabled) const
 {
-	ui->pushButton_render->setEnabled(enabled);
+	ui->renderControls->SetRenderEnabled(enabled);
 }
 
 void cDockNavigation::AutoRefreshSetChecked(bool state) const
@@ -149,16 +149,20 @@ void cDockNavigation::ConnectSignals() const
 		SLOT(slotMovementStepModeChanged(int)));
 	connect(ui->comboBox_camera_movement_mode, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(slotCameraMovementModeChanged(int)));
-	connect(ui->pushButton_undo, SIGNAL(clicked()), this, SLOT(slotUndo()));
-	connect(ui->pushButton_redo, SIGNAL(clicked()), this, SLOT(slotRedo()));
-	connect(ui->pushButton_render, SIGNAL(clicked()), this, SLOT(slotStartRender()));
+	connect(ui->renderControls, &cRenderControlsWidget::undoRequested, this,
+		&cDockNavigation::slotUndo);
+	connect(ui->renderControls, &cRenderControlsWidget::redoRequested, this,
+		&cDockNavigation::slotRedo);
+	connect(ui->renderControls, &cRenderControlsWidget::renderRequested, this,
+		&cDockNavigation::slotStartRender);
 
-	connect(ui->pushButton_stop, SIGNAL(clicked()), this, SLOT(slotStopRender()));
+	connect(ui->renderControls, &cRenderControlsWidget::stopRequested, this,
+		&cDockNavigation::slotStopRender);
 	connect(ui->pushButton_reset_view, SIGNAL(clicked()), this, SLOT(slotPressedButtonResetView()));
 	connect(ui->comboBox_opencl_mode, SIGNAL(currentIndexChanged(int)), this,
 		SLOT(slotChangedOpenCLMode(int)));
 	connect(
-		ui->pushButton_openNavigator, &QPushButton::clicked, this, &cDockNavigation::slotOpenNavigator);
+		ui->renderControls, &cRenderControlsWidget::navigatorRequested, this, &cDockNavigation::slotOpenNavigator);
 }
 
 void cDockNavigation::slotCameraMove()
@@ -235,17 +239,15 @@ void cDockNavigation::slotStopRender()
 void cDockNavigation::LockAllFunctions() const
 {
 	ui->scrollArea_navi->setEnabled(false);
-	ui->pushButton_render->setEnabled(false);
-	ui->pushButton_undo->setEnabled(false);
-	ui->pushButton_redo->setEnabled(false);
+	ui->renderControls->SetRenderEnabled(false);
+	ui->renderControls->SetHistoryEnabled(false);
 }
 
 void cDockNavigation::UnlockAllFunctions() const
 {
 	ui->scrollArea_navi->setEnabled(true);
-	ui->pushButton_render->setEnabled(true);
-	ui->pushButton_undo->setEnabled(true);
-	ui->pushButton_redo->setEnabled(true);
+	ui->renderControls->SetRenderEnabled(true);
+	ui->renderControls->SetHistoryEnabled(true);
 }
 
 void cDockNavigation::slotCameraMovementModeChanged(int index)
@@ -261,9 +263,7 @@ void cDockNavigation::EnableOpenCLModeComboBox(bool enabled) const
 
 void cDockNavigation::HideSomeButtons()
 {
-	ui->pushButton_undo->hide();
-	ui->pushButton_redo->hide();
-	ui->pushButton_openNavigator->hide();
+	ui->renderControls->SetNavigationActionsVisible(false);
 	ui->checkBox_auto_refresh->hide();
 }
 
